@@ -32,7 +32,7 @@ router.post("/login", async (req, res, next) => {
     );
 
     if (!instructor) {
-      throw { status: 401, message: "Login failed." };
+      throw { status: 401, message: "Invalid login credentials." };
     }
 
     // Create a token with the instructor id

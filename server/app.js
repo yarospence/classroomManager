@@ -11,16 +11,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Static file-serving middleware
-// app.use(express.static(path.join(__dirname, "..", "public")));
+app.use(express.static(path.join(__dirname, "..", "client/dist")));
 
 // Backend routes
 app.use("/auth", require("./auth"));
 app.use("/api", require("./api"));
 
-// // Serves the HTML file that Vite generates
-// app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "..", "index.html"));
-// });
+// Serves the HTML file that Vite builds
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "client/dist/index.html"));
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {

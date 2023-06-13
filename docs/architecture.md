@@ -1,13 +1,30 @@
 # Project Architecture
 
+This document is not comprehensive but should provide a general idea of how this project is laid out.
+
 ## Backend
 
-The entrypoint is `server/index.js`, which initializes an Express app and listens on port 3000 (by default).
+`server/`
 
-`server/app.js` connects relevant Express middleware and also serves the frontend.
+- `index.js`: Entrypoint file that initializes an Express app
+- `app.js`: connects relevant Express middleware and also serves `client/dist`.
+  - For development, see `:dev` scripts in `package.json`.
+- `db/`: handles connection to the database.
+  - `seed.js`: populates the database with initial data. Look here for the schema.
+- `auth/`: handles user account authentication with JWT
+- `api/`: handles the api endpoints.
+  - `students.js`: routes and controllers for student data
 
-`server/db` handles the connection to the database. There are two tables: a user can register as an `instructor` to manage their `student`s. The schema can be found in `server/db/seed.js`.
+## Frontend
 
-`server/auth` handles creating and verifying user accounts with JWT.
+`client/src/`
 
-`server/api` handles the api endpoints. A valid token needs to be in the request headers in order to access these endpoints.
+- `index.html`: Entrypoint file that loads `main.jsx`
+- `main.jsx`: Root React component that renders `<App/>`
+- `app/`: app-wide setup
+  - `store.js`: Redux store setup
+  - `api.js`: central RTK Query API service
+- `features/`:
+  - `auth/`: user authentication
+  - `dashboard/`: main user interface
+  - `students/`: CRUD interface for managing student data
