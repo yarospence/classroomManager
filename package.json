@@ -6,7 +6,8 @@
   "scripts": {
     "seed": "node server/db/seed.js",
     "client:dev": "vite serve client",
-    "server:dev": "node --watch server",
+    "server:dev": "JWT=JWT node --watch server",
+    "server:dev:windows": "set JWT=JWT && node --watch server",
     "build": "vite build client",
     "server": "node server"
   },
