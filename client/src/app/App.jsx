@@ -1,7 +1,6 @@
-import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import AuthForm from "../features/auth/AuthForm";
-import { selectToken } from "../features/auth/authSlice";
+import { useMeQuery } from "../features/auth/authSlice";
 import Dashboard from "../features/dashboard/Dashboard";
 import "./App.css";
 
@@ -23,9 +22,9 @@ function App() {
     </Routes>
   );
 
-  const token = useSelector(selectToken);
-
-  return token ? userRouter : guestRouter;
+  const { data: me } = useMeQuery();
+  const loggedIn = !!me?.id;
+  return loggedIn ? userRouter : guestRouter;
 }
 
 export default App;

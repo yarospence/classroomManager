@@ -1,7 +1,14 @@
-// An instructor can only see the students that they created,
-// so all routes require a valid JWT token.
+// An instructor can only access their own students' data.
 const router = require("express").Router();
 const db = require("../db");
+
+// Deny access if user is not logged in
+router.use((req, res, next) => {
+  if (!req.user) {
+    throw { status: 401, message: "You must be logged in to do that." };
+  }
+  next();
+});
 
 // Get all students
 router.get("/", async (req, res, next) => {

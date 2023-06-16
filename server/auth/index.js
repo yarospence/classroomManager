@@ -44,4 +44,19 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
+// Get the currently logged in instructor
+router.get("/me", async (req, res, next) => {
+  try {
+    const {
+      rows: [instructor],
+    } = await db.query("SELECT * FROM instructor WHERE id = $1", [
+      req.user?.id,
+    ]);
+
+    res.send(instructor);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

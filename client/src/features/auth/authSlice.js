@@ -1,17 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { api } from "../../app/api";
 
+// Session storage key
+const TOKEN = "token";
+
 /**
  * API endpoints
  */
 const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    me: builder.query({
+      query: () => "auth/me",
+      providesTags: ["Me"],
+    }),
     login: builder.mutation({
       query: (credentials) => ({
         url: "auth/login",
         method: "POST",
         body: credentials,
       }),
+      invalidatesTags: ["Me"],
     }),
     register: builder.mutation({
       query: (credentials) => ({
@@ -19,9 +27,18 @@ const authApi = api.injectEndpoints({
         method: "POST",
         body: credentials,
       }),
+      invalidatesTags: ["Me"],
     }),
   }),
 });
+
+/**
+ * Stores the payload's token in both state and session storage.
+ */
+function storeToken(state, { payload }) {
+  state.token = payload.token;
+  window.sessionStorage.setItem(TOKEN, payload.token);
+}
 
 /**
  * Stores token whenever login or register succeeds
@@ -29,26 +46,22 @@ const authApi = api.injectEndpoints({
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    token: null,
+    me: {},
+    token: window.sessionStorage.getItem(TOKEN),
   },
   reducers: {},
   extraReducers: (builder) => {
     builder.addMatcher(
-      api.endpoints.login.matchFulfilled,
+      api.endpoints.me.matchFulfilled,
       (state, { payload }) => {
-        state.token = payload.token;
+        state.me = payload;
       }
     );
-    builder.addMatcher(
-      api.endpoints.register.matchFulfilled,
-      (state, { payload }) => {
-        state.token = payload.token;
-      }
-    );
+    builder.addMatcher(api.endpoints.login.matchFulfilled, storeToken);
+    builder.addMatcher(api.endpoints.register.matchFulfilled, storeToken);
   },
 });
 
 export default authSlice.reducer;
 
-export const { useLoginMutation, useRegisterMutation } = authApi;
-export const selectToken = (state) => state.auth.token;
+export const { useMeQuery, useLoginMutation, useRegisterMutation } = authApi;
