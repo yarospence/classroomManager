@@ -13,13 +13,13 @@ async function seed() {
     await db.query(`
       CREATE TABLE instructor (
         id SERIAL PRIMARY KEY,
-        username VARCHAR(255) UNIQUE NOT NULL,
-        password VARCHAR(255) NOT NULL
+        username TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL
       );
       CREATE TABLE student (
         id SERIAL PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        cohort VARCHAR(255) NOT NULL,
+        name TEXT NOT NULL,
+        cohort TEXT NOT NULL,
         instructorId INTEGER NOT NULL REFERENCES instructor(id) ON DELETE CASCADE
       );
     `);
