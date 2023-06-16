@@ -12,8 +12,7 @@ import "./App.css";
 function App() {
   const guestRouter = (
     <Routes>
-      <Route path="/register" element={<AuthForm isLogin={false} />} />
-      <Route path="/*" element={<AuthForm isLogin={true} />} />
+      <Route path="/*" element={<AuthForm />} />
     </Routes>
   );
   const userRouter = (
