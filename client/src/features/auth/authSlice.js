@@ -29,6 +29,10 @@ const authApi = api.injectEndpoints({
       }),
       invalidatesTags: ["Me"],
     }),
+    logout: builder.mutation({
+      queryFn: () => ({ data: {} }),
+      invalidatesTags: ["Me"],
+    }),
   }),
 });
 
@@ -46,22 +50,24 @@ function storeToken(state, { payload }) {
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    me: {},
     token: window.sessionStorage.getItem(TOKEN),
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addMatcher(
-      api.endpoints.me.matchFulfilled,
-      (state, { payload }) => {
-        state.me = payload;
-      }
-    );
     builder.addMatcher(api.endpoints.login.matchFulfilled, storeToken);
     builder.addMatcher(api.endpoints.register.matchFulfilled, storeToken);
+    builder.addMatcher(api.endpoints.logout.matchFulfilled, (state) => {
+      state.token = null;
+      window.sessionStorage.removeItem(TOKEN);
+    });
   },
 });
 
 export default authSlice.reducer;
 
-export const { useMeQuery, useLoginMutation, useRegisterMutation } = authApi;
+export const {
+  useMeQuery,
+  useLoginMutation,
+  useRegisterMutation,
+  useLogoutMutation,
+} = authApi;

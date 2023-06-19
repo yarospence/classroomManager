@@ -1,3 +1,4 @@
+import LogoutButton from "../auth/LogoutButton";
 import { useMeQuery } from "../auth/authSlice";
 import StudentForm from "../students/StudentForm";
 import StudentTable from "../students/StudentTable";
@@ -10,6 +11,7 @@ function Dashboard() {
   return (
     <main>
       <h1>Welcome, {me.username}!</h1>
+      <LogoutButton />
       <StudentTable />
       <StudentForm />
     </main>
