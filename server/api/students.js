@@ -5,7 +5,7 @@ const db = require("../db");
 // Deny access if user is not logged in
 router.use((req, res, next) => {
   if (!req.user) {
-    throw { status: 401, message: "You must be logged in to do that." };
+    return res.status(401).send("You must be logged in to do that.");
   }
   next();
 });
@@ -34,7 +34,7 @@ router.get("/:id", async (req, res, next) => {
     );
 
     if (!student) {
-      throw { status: 404, message: "Student not found." };
+      return res.status(404).send("Student not found.");
     }
 
     res.send(student);
@@ -69,7 +69,7 @@ router.put("/:id", async (req, res, next) => {
     );
 
     if (!student) {
-      throw { status: 404, message: "Student not found." };
+      return res.status(404).send("Student not found.");
     }
 
     res.send(student);
@@ -89,7 +89,7 @@ router.delete("/:id", async (req, res, next) => {
     );
 
     if (!student) {
-      throw { status: 404, message: "Student not found." };
+      return res.status(404).send("Student not found.");
     }
 
     res.send(student);
