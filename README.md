@@ -9,5 +9,5 @@ You will be working on this project for the next few workshops. Each workshop wi
 The instructions for each workshop have been split into separate files:
 
 - [34A Instructions](docs/34A.md)
-- [34B Instructions](docs/34B`md)
+- [34B Instructions](docs/34B.md)
 - [34C Instructions](docs/34C.md)
